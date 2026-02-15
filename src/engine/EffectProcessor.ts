@@ -308,6 +308,21 @@ export class EffectProcessor {
     this.asciiPass.uniforms.cellSize.value = preset.ascii.cellSize;
     this.asciiPass.uniforms.color.value = preset.ascii.color;
     this.asciiPass.uniforms.enableColor.value = preset.ascii.enableColor;
+    this.asciiPass.uniforms.scale.value = preset.ascii.scale;
+    this.asciiPass.uniforms.spacing.value = preset.ascii.spacing;
+    this.asciiPass.uniforms.outputWidth.value = preset.ascii.outputWidth;
+    // Map character set string to index
+    const charSetMap: Record<string, number> = {
+      standard: 0, blocks: 1, binary: 2, detailed: 3, minimal: 4,
+      alphabetic: 5, numeric: 6, math: 7, symbols: 8
+    };
+    this.asciiPass.uniforms.characterSet.value = charSetMap[preset.ascii.characterSet] ?? 0;
+    this.asciiPass.uniforms.brightness.value = preset.ascii.brightness;
+    this.asciiPass.uniforms.contrast.value = preset.ascii.contrast;
+    this.asciiPass.uniforms.saturation.value = preset.ascii.saturation;
+    this.asciiPass.uniforms.hueRotation.value = preset.ascii.hueRotation;
+    this.asciiPass.uniforms.sharpness.value = preset.ascii.sharpness;
+    this.asciiPass.uniforms.gamma.value = preset.ascii.gamma;
     
     // Pixelate
     this.pixelatePass.uniforms.enable.value = preset.pixelate.enabled;
@@ -339,6 +354,22 @@ export class EffectProcessor {
     if (params.cellSize !== undefined) this.asciiPass.uniforms.cellSize.value = params.cellSize;
     if (params.color !== undefined) this.asciiPass.uniforms.color.value = params.color;
     if (params.enableColor !== undefined) this.asciiPass.uniforms.enableColor.value = params.enableColor;
+    if (params.scale !== undefined) this.asciiPass.uniforms.scale.value = params.scale;
+    if (params.spacing !== undefined) this.asciiPass.uniforms.spacing.value = params.spacing;
+    if (params.outputWidth !== undefined) this.asciiPass.uniforms.outputWidth.value = params.outputWidth;
+    if (params.characterSet !== undefined) {
+      const charSetMap: Record<string, number> = {
+        standard: 0, blocks: 1, binary: 2, detailed: 3, minimal: 4,
+        alphabetic: 5, numeric: 6, math: 7, symbols: 8
+      };
+      this.asciiPass.uniforms.characterSet.value = charSetMap[params.characterSet] ?? 0;
+    }
+    if (params.brightness !== undefined) this.asciiPass.uniforms.brightness.value = params.brightness;
+    if (params.contrast !== undefined) this.asciiPass.uniforms.contrast.value = params.contrast;
+    if (params.saturation !== undefined) this.asciiPass.uniforms.saturation.value = params.saturation;
+    if (params.hueRotation !== undefined) this.asciiPass.uniforms.hueRotation.value = params.hueRotation;
+    if (params.sharpness !== undefined) this.asciiPass.uniforms.sharpness.value = params.sharpness;
+    if (params.gamma !== undefined) this.asciiPass.uniforms.gamma.value = params.gamma;
   }
   
   setPixelate(params: Partial<EffectPreset['pixelate']>) {
