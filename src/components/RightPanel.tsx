@@ -28,7 +28,6 @@ const RightPanel: React.FC<RightPanelProps> = ({
   // State for collapsible sections
   const [openSections, setOpenSections] = useState({
     settings: true,
-    ascii: true,
     processing: false,
     postProcessing: false,
     export: false,
@@ -204,17 +203,14 @@ const RightPanel: React.FC<RightPanelProps> = ({
     </div>
   );
 
-  // Get effect display name
-  const getEffectName = (effect: EffectType): string => {
-    const names: Record<EffectType, string> = {
-      ascii: 'ASCII',
-      dithering: 'Dithering',
-      pixelate: 'Pixelate',
-      crt: 'CRT Monitor',
-      noise: 'Film Grain',
-    };
-    return names[effect];
-  };
+  // Flat subheader (non-dropdown) with green left border
+  const SubHeader = ({ title }: { title: string }) => (
+    <div className="px-4 py-2 bg-gray-800/30 border-l-2 border-green-600 my-3 -mx-4">
+      <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+        {title}
+      </h4>
+    </div>
+  );
 
   // Character set options
   const characterSets: { value: CharacterSet; label: string }[] = [
@@ -229,59 +225,108 @@ const RightPanel: React.FC<RightPanelProps> = ({
     { value: 'symbols', label: 'Symbols' },
   ];
 
-  // Render settings for the active effect
-  const renderEffectSettings = () => {
+  // Render ASCII-specific settings (Scale, Spacing, Output Width, Character Set)
+  const renderAsciiSettings = () => {
+    if (activeEffect !== 'ascii') return null;
+    
+    return (
+      <>
+        <Slider
+          label="Scale"
+          value={preset.ascii.scale}
+          min={0.1}
+          max={2}
+          step={0.01}
+          onChange={(v) => updatePreset('ascii.scale', v)}
+          suffix="x"
+        />
+        <Slider
+          label="Spacing"
+          value={preset.ascii.spacing}
+          min={0}
+          max={2}
+          step={0.01}
+          onChange={(v) => updatePreset('ascii.spacing', v)}
+          suffix="x"
+        />
+        <Slider
+          label="Output Width"
+          value={preset.ascii.outputWidth}
+          min={10}
+          max={200}
+          step={1}
+          onChange={(v) => updatePreset('ascii.outputWidth', v)}
+        />
+        <div className="py-3">
+          <label className="block text-sm text-gray-300 mb-2">Character Set</label>
+          <select
+            value={preset.ascii.characterSet}
+            onChange={(e) => updatePreset('ascii.characterSet', e.target.value as CharacterSet)}
+            className="w-full bg-gray-800 text-gray-200 text-sm rounded px-3 py-2 border border-gray-700 focus:border-green-500 focus:outline-none"
+          >
+            {characterSets.map((set) => (
+              <option key={set.value} value={set.value}>{set.label}</option>
+            ))}
+          </select>
+        </div>
+      </>
+    );
+  };
+
+  // Render adjustments section for the active effect
+  const renderAdjustments = () => {
     switch (activeEffect) {
       case 'ascii':
         return (
           <>
             <Slider
-              label="Scale"
-              value={preset.ascii.scale}
-              min={0.1}
-              max={2}
-              step={0.01}
-              onChange={(v) => updatePreset('ascii.scale', v)}
-              suffix="x"
-            />
-            <Slider
-              label="Spacing"
-              value={preset.ascii.spacing}
-              min={0}
-              max={2}
-              step={0.01}
-              onChange={(v) => updatePreset('ascii.spacing', v)}
-              suffix="x"
-            />
-            <Slider
-              label="Output Width"
-              value={preset.ascii.outputWidth}
-              min={10}
-              max={200}
+              label="Brightness"
+              value={preset.ascii.brightness}
+              min={-100}
+              max={100}
               step={1}
-              onChange={(v) => updatePreset('ascii.outputWidth', v)}
+              onChange={(v) => updatePreset('ascii.brightness', v)}
             />
-            <div className="py-3">
-              <label className="block text-sm text-gray-300 mb-2">Character Set</label>
-              <select
-                value={preset.ascii.characterSet}
-                onChange={(e) => updatePreset('ascii.characterSet', e.target.value as CharacterSet)}
-                className="w-full bg-gray-800 text-gray-200 text-sm rounded px-3 py-2 border border-gray-700 focus:border-green-500 focus:outline-none"
-              >
-                {characterSets.map((set) => (
-                  <option key={set.value} value={set.value}>{set.label}</option>
-                ))}
-              </select>
-            </div>
-            <ColorPicker
-              label="Character Color"
-              value={preset.ascii.color}
-              onChange={(v) => updatePreset('ascii.color', v)}
+            <Slider
+              label="Contrast"
+              value={preset.ascii.contrast}
+              min={-100}
+              max={100}
+              step={1}
+              onChange={(v) => updatePreset('ascii.contrast', v)}
             />
-            <Toggle
-              label="Use Original Colors"
-              checked={preset.ascii.enableColor}
-              onChange={(v) => updatePreset('ascii.enableColor', v)}
+            <Slider
+              label="Saturation"
+              value={preset.ascii.saturation}
+              min={-100}
+              max={100}
+              step={1}
+              onChange={(v) => updatePreset('ascii.saturation', v)}
+            />
+            <Slider
+              label="Hue Rotation"
+              value={preset.ascii.hueRotation}
+              min={0}
+              max={360}
+              step={1}
+              onChange={(v) => updatePreset('ascii.hueRotation', v)}
+              suffix="°"
+            />
+            <Slider
+              label="Sharpness"
+              value={preset.ascii.sharpness}
+              min={0}
+              max={10}
+              step={1}
+              onChange={(v) => updatePreset('ascii.sharpness', v)}
+            />
+            <Slider
+              label="Gamma"
+              value={preset.ascii.gamma}
+              min={0.1}
+              max={3}
+              step={0.01}
+              onChange={(v) => updatePreset('ascii.gamma', v)}
             />
           </>
         );
@@ -374,7 +419,39 @@ const RightPanel: React.FC<RightPanelProps> = ({
         );
 
       default:
-        return null;
+        return (
+          <p className="text-sm text-gray-500 italic">
+            No adjustments for this effect
+          </p>
+        );
+    }
+  };
+
+  // Render color section for the active effect
+  const renderColorSettings = () => {
+    switch (activeEffect) {
+      case 'ascii':
+        return (
+          <>
+            <ColorPicker
+              label="Character Color"
+              value={preset.ascii.color}
+              onChange={(v) => updatePreset('ascii.color', v)}
+            />
+            <Toggle
+              label="Use Original Colors"
+              checked={preset.ascii.enableColor}
+              onChange={(v) => updatePreset('ascii.enableColor', v)}
+            />
+          </>
+        );
+
+      default:
+        return (
+          <p className="text-sm text-gray-500 italic">
+            No color settings for this effect
+          </p>
+        );
     }
   };
 
@@ -388,20 +465,21 @@ const RightPanel: React.FC<RightPanelProps> = ({
           isOpen={openSections.settings}
           onToggle={() => toggleSection('settings')}
         >
-          {/* General settings placeholder */}
-          <p className="text-sm text-gray-500 italic">
-            General settings coming soon
-          </p>
-        </DropdownSection>
+          {/* ASCII Subheader (flat) - only shown when ASCII is active */}
+          {activeEffect === 'ascii' && (
+            <>
+              <SubHeader title="ASCII" />
+              {renderAsciiSettings()}
+            </>
+          )}
 
-        {/* Active Effect Section (e.g., ASCII, Dithering, etc.) */}
-        <DropdownSection
-          title={getEffectName(activeEffect)}
-          isOpen={openSections.ascii}
-          onToggle={() => toggleSection('ascii')}
-        >
-          {/* Effect-specific settings */}
-          {renderEffectSettings()}
+          {/* Adjustments Subheader (flat) */}
+          <SubHeader title="Adjustments" />
+          {renderAdjustments()}
+
+          {/* Color Subheader (flat) */}
+          <SubHeader title="Color" />
+          {renderColorSettings()}
         </DropdownSection>
 
         {/* Processing Dropdown */}

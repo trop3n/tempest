@@ -52,6 +52,12 @@ export interface EffectPreset {
     spacing: number;
     outputWidth: number;
     characterSet: CharacterSet;
+    brightness: number;
+    contrast: number;
+    saturation: number;
+    hueRotation: number;
+    sharpness: number;
+    gamma: number;
   };
   pixelate: {
     enabled: boolean;
@@ -77,7 +83,7 @@ export const DEFAULT_PRESETS: EffectPreset[] = [
   {
     name: 'Matrix ASCII',
     dithering: { enabled: false, type: 'bayer', colorLevels: 4, scale: 1 },
-    ascii: { enabled: true, cellSize: 8, color: [0, 1, 0], enableColor: false, scale: 1, spacing: 1, outputWidth: 100, characterSet: 'standard' },
+    ascii: { enabled: true, cellSize: 8, color: [0, 1, 0], enableColor: false, scale: 1, spacing: 1, outputWidth: 100, characterSet: 'standard', brightness: 0, contrast: 0, saturation: 0, hueRotation: 0, sharpness: 0, gamma: 1.0 },
     pixelate: { enabled: false, pixelSize: 4 },
     crt: { enabled: true, scanlineIntensity: 0.3, vignetteIntensity: 1.2, enableCurvature: false },
     noise: { enabled: true, amount: 0.05, speed: 0.5 },
@@ -85,7 +91,7 @@ export const DEFAULT_PRESETS: EffectPreset[] = [
   {
     name: 'Game Boy',
     dithering: { enabled: true, type: 'color', colorLevels: 4, scale: 1, palette: 'GAMEBOY' },
-    ascii: { enabled: false, cellSize: 8, color: [0.61, 0.73, 0.35], enableColor: false, scale: 1, spacing: 1, outputWidth: 100, characterSet: 'standard' },
+    ascii: { enabled: false, cellSize: 8, color: [0.61, 0.73, 0.35], enableColor: false, scale: 1, spacing: 1, outputWidth: 100, characterSet: 'standard', brightness: 0, contrast: 0, saturation: 0, hueRotation: 0, sharpness: 0, gamma: 1.0 },
     pixelate: { enabled: true, pixelSize: 4 },
     crt: { enabled: false, scanlineIntensity: 0.5, vignetteIntensity: 1.5, enableCurvature: false },
     noise: { enabled: false, amount: 0.1, speed: 0 },
@@ -93,7 +99,7 @@ export const DEFAULT_PRESETS: EffectPreset[] = [
   {
     name: 'Retro CRT',
     dithering: { enabled: false, type: 'bayer', colorLevels: 8, scale: 1 },
-    ascii: { enabled: false, cellSize: 8, color: [0, 1, 0], enableColor: false, scale: 1, spacing: 1, outputWidth: 100, characterSet: 'standard' },
+    ascii: { enabled: false, cellSize: 8, color: [0, 1, 0], enableColor: false, scale: 1, spacing: 1, outputWidth: 100, characterSet: 'standard', brightness: 0, contrast: 0, saturation: 0, hueRotation: 0, sharpness: 0, gamma: 1.0 },
     pixelate: { enabled: false, pixelSize: 4 },
     crt: { enabled: true, scanlineIntensity: 0.6, vignetteIntensity: 2.0, enableCurvature: true },
     noise: { enabled: true, amount: 0.08, speed: 2.0 },
@@ -101,7 +107,7 @@ export const DEFAULT_PRESETS: EffectPreset[] = [
   {
     name: 'Halftone',
     dithering: { enabled: false, type: 'bayer', colorLevels: 4, scale: 1 },
-    ascii: { enabled: false, cellSize: 8, color: [0, 0, 0], enableColor: false, scale: 1, spacing: 1, outputWidth: 100, characterSet: 'standard' },
+    ascii: { enabled: false, cellSize: 8, color: [0, 0, 0], enableColor: false, scale: 1, spacing: 1, outputWidth: 100, characterSet: 'standard', brightness: 0, contrast: 0, saturation: 0, hueRotation: 0, sharpness: 0, gamma: 1.0 },
     pixelate: { enabled: true, pixelSize: 6 },
     crt: { enabled: false, scanlineIntensity: 0.5, vignetteIntensity: 1.5, enableCurvature: false },
     noise: { enabled: false, amount: 0.1, speed: 0 },
@@ -109,7 +115,7 @@ export const DEFAULT_PRESETS: EffectPreset[] = [
   {
     name: 'Clean',
     dithering: { enabled: false, type: 'bayer', colorLevels: 4, scale: 1 },
-    ascii: { enabled: false, cellSize: 8, color: [1, 1, 1], enableColor: true, scale: 1, spacing: 1, outputWidth: 100, characterSet: 'standard' },
+    ascii: { enabled: false, cellSize: 8, color: [1, 1, 1], enableColor: true, scale: 1, spacing: 1, outputWidth: 100, characterSet: 'standard', brightness: 0, contrast: 0, saturation: 0, hueRotation: 0, sharpness: 0, gamma: 1.0 },
     pixelate: { enabled: false, pixelSize: 4 },
     crt: { enabled: false, scanlineIntensity: 0.5, vignetteIntensity: 1.5, enableCurvature: false },
     noise: { enabled: false, amount: 0.1, speed: 0 },
